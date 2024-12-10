@@ -35,6 +35,9 @@ npm start
 
 - Node.js (v14 or higher)
 - npm (v6 or higher)
+
+## Optional
+
 - OpenRouter API key (get one from [openrouter.ai](https://openrouter.ai))
 
 ## Usage
