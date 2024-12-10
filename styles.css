@@ -1,0 +1,770 @@
+:root {
+    --p: #4CAF50;
+    --ph: #45a049;
+    --e: #f44;
+    --b: #ddd;
+    --bg: #f5f7fa;
+    --s: #fff;
+    --t: #333;
+    --d: #1e1e1e;
+    --h: #fff;
+    --sh: 0 2px 4px #0001;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--t);
+    background-color: var(--bg);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 24px;
+    padding: 24px;
+    padding-top: 12px;
+}
+
+.sidebar {
+    position: sticky;
+    top: 24px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.section {
+    background: var(--s);
+    border-radius: 12px;
+    box-shadow: var(--sh);
+    overflow: hidden;
+}
+
+.section-header {
+    background-color: var(--h);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--b);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-content {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+    max-width: 100%;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--t);
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--p);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    select {
+        background-color: var(--s);
+        color: var(--t);
+    }
+}
+
+.primary-button {
+    background-color: var(--p);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primary-button:hover {
+    background-color: var(--ph);
+    transform: translateY(-1px);
+}
+
+.secondary-button {
+    background-color: transparent;
+    color: var(--t);
+    border: 1px solid var(--b);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+}
+
+.icon-button, 
+.action-button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: transparent;
+    border: 1px solid var(--b);
+    color: var(--t);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icon-button:hover,
+.action-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+}
+
+.drop-zone {
+    border: 2px dashed var(--b);
+    border-radius: 12px;
+    padding: 32px 20px;
+    transition: all 0.2s ease;
+}
+
+.drop-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.upload-icon {
+    font-size: 32px;
+}
+
+.or-divider {
+    color: var(--t);
+    opacity: 0.5;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.backup-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.backup-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    align-items: center;
+}
+
+.backup-name {
+    min-width: 0;
+    padding: 6px 8px;
+}
+
+.backup-timestamp {
+    color: #666;
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Action buttons in backup items */
+.backup-item .action-button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: transparent;
+    border: 1px solid var(--b);
+    color: var(--t);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.backup-item .action-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.backup-item .delete-button {
+    color: var(--e);
+}
+
+.backup-item .delete-button:hover {
+    background-color: var(--e);
+    color: white;
+    border-color: var(--e);
+}
+
+.backup-item .load-button {
+    color: var(--p);
+}
+
+.backup-item .load-button:hover {
+    background-color: var(--p);
+    color: white;
+    border-color: var(--p);
+}
+
+.backup-controls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.backup-item button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.debug-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--b);
+}
+
+.debug-output {
+    background-color: var(--d);
+    color: var(--debug-text);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+}
+
+@media (max-width: 1200px) {
+    .container {
+        grid-template-columns: 300px 1fr;
+        padding: 16px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        position: static;
+    }
+    
+    .two-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .backup-item {
+        grid-template-columns: 1fr auto auto;
+    }
+
+    .backup-timestamp {
+        grid-column: 1 / -1;
+        font-size: 0.75em;
+    }
+}
+
+@media (max-width: 480px) {
+    .backup-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .backup-item button {
+        width: 100%;
+    }
+
+    .backup-controls {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #1a1a1a;
+        --s: #242424;
+        --h: #2a2a2a;
+        --t: #e0e0e0;
+        --b: #404040;
+        --sh: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+        background-color: #333;
+        color: var(--t);
+    }
+
+    .secondary-button:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .icon-button:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Action-specific button styles */
+.save-button {
+    color: var(--p);
+}
+
+.save-button:hover {
+    background-color: var(--p);
+    color: white;
+    border-color: var(--p);
+}
+
+.generate-button {
+    color: var(--p);
+    font-size: 20px;
+}
+
+.generate-button:hover {
+    background-color: var(--p);
+    color: white;
+    border-color: var(--p);
+}
+
+.add-button {
+    color: var(--success-color);
+}
+
+.add-button:hover {
+    background-color: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+.download-button {
+    color: var(--p);
+}
+
+.download-button:hover {
+    background-color: var(--p);
+    color: white;
+    border-color: var(--p);
+}
+
+/* Button groups */
+.button-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Add these styles for inline button layouts */
+.input-group {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.input-group input,
+.input-group textarea {
+    flex: 1;
+}
+
+.input-group .action-button {
+    margin-top: 28px; /* Align with input, accounting for label */
+}
+
+/* Update knowledge processing layout */
+.knowledge-drop-zone {
+    margin-bottom: 20px;
+}
+
+.knowledge-drop-zone .drop-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    padding: 32px 20px;
+}
+
+/* Result section layout */
+.result-controls {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* Message example layout */
+.message-example {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: start;
+}
+
+.message-pair {
+    width: 100%;
+}
+
+.message-pair textarea {
+    width: 100%;
+    min-height: 100px;
+}
+
+/* Message example container layout */
+.message-examples-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.message-examples-header label {
+    margin-bottom: 0;
+}
+
+/* Add top frame styles */
+.top-frame {
+    background: var(--h);
+    border-bottom: 1px solid var(--b);
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.frame-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.site-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.site-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--t);
+    margin: 0;
+}
+
+/* Dark mode adjustment */
+@media (prefers-color-scheme: dark) {
+    .top-frame {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* People entry layout */
+.people-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.people-header label {
+    margin-bottom: 0;
+}
+
+.person-entry {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.person-entry input {
+    flex: 1;
+}
+
+/* Adjectives and Post Examples layout */
+.adjectives-header,
+.post-examples-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.adjectives-header label,
+.post-examples-header label {
+    margin-bottom: 0;
+}
+
+.adjective-entry,
+.post-entry {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.adjective-entry input,
+.post-entry input {
+    flex: 1;
+}
+
+.post-entry textarea {
+    flex: 1;
+    min-height: 60px;
+}
+
+.knowledge-display {
+    margin-top: 20px;
+    border-top: 1px solid var(--b);
+    padding-top: 20px;
+}
+
+.no-knowledge {
+    padding: 12px;
+    text-align: center;
+    color: var(--t);
+    opacity: 0.7;
+}
+
+.knowledge-entries {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    background: var(--s);
+}
+
+.knowledge-entry {
+    padding: 8px 12px;
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--b);
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.entry-number {
+    color: var(--p);
+    font-weight: 500;
+    min-width: 24px;
+    flex-shrink: 0;
+}
+
+.entry-text {
+    flex: 1;
+    min-width: 0;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Ensure debug output doesn't cause horizontal scroll */
+.debug-output {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.debug-output pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.knowledge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.knowledge-header h3 {
+    margin: 0;
+}
+
+.knowledge-entry {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--b);
+}
+
+.knowledge-entry input {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 8px;
+    border: 1px solid var(--b);
+    border-radius: 4px;
+    background: var(--s);
+    color: var(--t);
+}
+
+.knowledge-entry input:focus {
+    outline: none;
+    border-color: var(--p);
+}
+
+.help-button {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    opacity: 0.7;
+    position: relative;
+}
+
+.help-button:hover {
+    opacity: 1;
+    background-color: var(--p);
+    color: white;
+    border-color: var(--p);
+}
+
+/* Improve tooltip appearance */
+[title] {
+    position: relative;
+    cursor: help;
+}
+
+[title]:hover::after {
+    content: attr(title);
+    position: fixed;
+    transform: translateY(-100%);
+    margin-top: -10px;
+    background: var(--s);
+    color: var(--t);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: normal;
+    max-width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--b);
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Position the tooltip at the mouse cursor */
+[title]:hover::after {
+    left: var(--mouse-x, 0);
+    top: var(--mouse-y, 0);
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    [title]:hover::after {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.client-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.client-toggle {
+    padding: 8px 16px;
+    border: 1px solid var(--b);
+    border-radius: 20px;
+    background: var(--s);
+    color: var(--t);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.client-toggle:hover {
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.client-toggle.active {
+    background: var(--p);
+    color: white;
+    border-color: var(--p);
+}
+
+@media (prefers-color-scheme: dark) {
+    .client-toggle {
+        background: var(--s);
+        border-color: var(--b);
+    }
+    
+    .client-toggle:hover {
+        background: rgba(76, 175, 80, 0.2);
+    }
+}
