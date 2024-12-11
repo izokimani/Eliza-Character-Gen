@@ -827,6 +827,7 @@ textarea {
     color: var(--p);
     text-decoration: none;
     transition: opacity 0.2s ease;
+    font-size: 14px;
 }
 
 .credit-item a:hover {
@@ -843,6 +844,7 @@ textarea {
     margin: 4px 0;
     padding-left: 12px;
     position: relative;
+    font-size: 14px;
 }
 
 .credit-list li::before {
@@ -851,6 +853,10 @@ textarea {
     left: 0;
     color: var(--t);
     opacity: 0.7;
+}
+
+.credit-list li a {
+    font-size: 14px;
 }
 
 /* Update widget theme based on page theme */
@@ -1031,4 +1037,30 @@ gecko-coin-ticker-widget {
     .backup-item button {
         width: 100%;
     }
+}
+
+.special-thanks-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+}
+
+.special-thanks-list li {
+    margin: 4px 0;
+    position: relative;
+    padding-left: 12px;
+    font-size: 14px;
+}
+
+.special-thanks-list li::before {
+    content: "-";
+    position: absolute;
+    left: 0;
+    color: var(--t);
+    opacity: 0.7;
+}
+
+.special-thanks-list li,
+.special-thanks-list li a {
+    font-size: 14px;
 }
