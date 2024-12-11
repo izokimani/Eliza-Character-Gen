@@ -37,8 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiKeyInput = document.getElementById('api-key');
     const saveKeyBtn = document.getElementById('save-key');
     const apiKeyStatus = document.getElementById('api-key-status');
-    const rawPromptOutput = document.getElementById('raw-prompt');
-    const rawResponseOutput = document.getElementById('raw-response');
     const characterDropZone = document.getElementById('character-drop-zone');
     const characterFileStatus = document.getElementById('character-file-status');
     const characterFileInput = document.getElementById('character-file-input');
@@ -386,24 +384,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checkSavedApiKey = () => {
         const savedKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+        const apiKeyInput = document.getElementById('api-key-input');
+        const apiKeyStatus = document.getElementById('api-key-status');
+        const statusText = apiKeyStatus.querySelector('.status-text');
+        
         if (savedKey) {
-            apiKeyStatus.textContent = 'API key is set';
-            apiKeyStatus.className = 'success';
+            apiKeyInput.style.display = 'none';
+            apiKeyStatus.style.display = 'flex';
+            statusText.textContent = 'API key is set';
+            apiKeyInput.value = '';
+        } else {
+            apiKeyInput.style.display = 'flex';
+            apiKeyStatus.style.display = 'none';
         }
     };
 
     saveKeyBtn.addEventListener('click', () => {
         const apiKey = apiKeyInput.value.trim();
         if (!apiKey) {
-            apiKeyStatus.textContent = 'Please enter an API key';
-            apiKeyStatus.className = 'error';
+            alert('Please enter an API key');
             return;
         }
 
         localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
-        apiKeyStatus.textContent = 'API key saved successfully';
-        apiKeyStatus.className = 'success';
-        apiKeyInput.value = '';
+        checkSavedApiKey();
+    });
+
+    document.getElementById('remove-key').addEventListener('click', () => {
+        if (confirm('Are you sure you want to remove your API key?')) {
+            localStorage.removeItem(API_KEY_STORAGE_KEY);
+            checkSavedApiKey();
+        }
     });
 
     modelSelect.addEventListener('change', () => {
@@ -552,8 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
         promptStatus.textContent = 'Generating character...';
         promptStatus.className = '';
         generateFromPromptBtn.disabled = true;
-        rawPromptOutput.textContent = 'Loading...';
-        rawResponseOutput.textContent = 'Loading...';
 
         try {
             const data = await apiCall('/api/generate-character', {
@@ -567,9 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             });
 
-            rawPromptOutput.textContent = data.rawPrompt || 'No raw prompt available';
-            rawResponseOutput.textContent = data.rawResponse || 'No raw response available';
-
             populateFormFields(data.character);
             promptStatus.textContent = 'Character generated successfully';
             promptStatus.className = 'success';
@@ -577,8 +583,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Generation error:', error);
             promptStatus.textContent = `Error: ${error.message}`;
             promptStatus.className = 'error';
-            rawPromptOutput.textContent = 'Error occurred';
-            rawResponseOutput.textContent = 'Error occurred';
         } finally {
             generateFromPromptBtn.disabled = false;
         }
@@ -747,9 +751,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     onchange="window.renameBackup('${backup.name}', this.value)">
                 <span class="backup-timestamp">${new Date(backup.timestamp).toLocaleString()}</span>
                 <button onclick="window.loadBackupByName('${backup.name}')" 
-                    class="action-button load-button" title="Load backup">↑</button>
+                    class="action-button load-button" title="Load backup">
+                    <i class="fa-solid fa-folder-open"></i>
+                </button>
                 <button onclick="window.deleteBackupByName('${backup.name}')" 
-                    class="action-button delete-button" title="Delete backup">×</button>
+                    class="action-button delete-button" title="Delete backup">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
             </div>
         `).join('');
     };
@@ -953,4 +961,41 @@ document.addEventListener('DOMContentLoaded', () => {
         return Array.from(document.querySelectorAll('.client-toggle.active'))
             .map(toggle => toggle.dataset.client);
     };
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    
+    // Check for saved theme preference or default to system preference
+    const savedTheme = localStorage.getItem('theme');
+    const widget = document.querySelector('gecko-coin-ticker-widget');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        if (widget) {
+            widget.setAttribute('dark-mode', savedTheme === 'dark' ? 'true' : 'false');
+        }
+    } else {
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', systemPrefersDark ? 'dark' : 'light');
+        themeIcon.className = systemPrefersDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        if (widget) {
+            widget.setAttribute('dark-mode', systemPrefersDark ? 'true' : 'false');
+        }
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeIcon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        
+        // Update widget theme
+        const widget = document.querySelector('gecko-coin-ticker-widget');
+        if (widget) {
+            widget.setAttribute('dark-mode', newTheme === 'dark' ? 'true' : 'false');
+        }
+    });
 });
