@@ -234,6 +234,12 @@ textarea {
     resize: vertical;
 }
 
+#character-prompt {
+    min-height: calc(1.6em * 3 + 24px); /* 3 lines + padding */
+    height: calc(1.6em * 3 + 24px);
+    resize: none;
+}
+
 .backup-list {
     margin-top: 16px;
     display: flex;
