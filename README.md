@@ -161,10 +161,10 @@ This project is licensed under the [MIT License](LICENSE).
 ## Credits
 
 ### Core Team
-- Created by [ai16z](https://github.com/ai16z)
+- Eliza Created by [ai16z](https://github.com/ai16z)
 - Tool Development by [HowieDuhzit](https://github.com/HowieDuhzit)
 
-### Contributors
+### Shoutouts
 - [@lalalune](https://github.com/lalalune)
 - [@fabianhug](https://github.com/fabianhug)
 - [@shakkernerd](https://github.com/shakkernerd)
