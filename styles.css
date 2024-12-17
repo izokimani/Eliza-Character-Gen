@@ -245,6 +245,28 @@ textarea {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    max-height: 74px;  /* Increased from 64px to 74px */
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Style the scrollbar */
+.backup-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.backup-list::-webkit-scrollbar-track {
+    background: var(--s);
+    border-radius: 4px;
+}
+
+.backup-list::-webkit-scrollbar-thumb {
+    background: var(--b);
+    border-radius: 4px;
+}
+
+.backup-list::-webkit-scrollbar-thumb:hover {
+    background: var(--p);
 }
 
 .backup-item {
@@ -979,6 +1001,10 @@ gecko-coin-ticker-widget {
     
     .backup-item {
         grid-template-columns: 1fr auto;
+    }
+    
+    .backup-timestamp {
+        grid-column: 1 / -1;
     }
     
     .message-example {

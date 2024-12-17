@@ -694,6 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const backup = {
             name: name || DEFAULT_BACKUP_NAME,
+            timestamp: new Date().toISOString(),
             data: currentCharacterData
         };
         const key = BACKUP_KEY_PREFIX + (name || DEFAULT_BACKUP_NAME).replace(/\s+/g, '_').toLowerCase();
@@ -747,6 +748,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backupList.innerHTML = backups.map(backup => `
             <div class="backup-item">
                 <input type="text" class="backup-name" value="${backup.name}" 
+                    title="${new Date(backup.timestamp).toLocaleString()}"
                     onchange="window.renameBackup('${backup.name}', this.value)">
                 <button onclick="window.loadBackupByName('${backup.name}')" 
                     class="action-button load-button" title="Load backup">
