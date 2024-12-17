@@ -998,4 +998,69 @@ document.addEventListener('DOMContentLoaded', () => {
             widget.setAttribute('dark-mode', newTheme === 'dark' ? 'true' : 'false');
         }
     });
+
+    // Add this with the other DOM element declarations at the top
+    const refinePromptInput = document.getElementById('refine-prompt');
+    const refineCharacterBtn = document.getElementById('refine-character');
+    const refineStatus = document.getElementById('refine-status');
+
+    // Add this event listener with the other initialization code
+    refineCharacterBtn.addEventListener('click', async () => {
+        const refinePrompt = refinePromptInput.value.trim();
+        const selectedModel = modelSelect.value;
+        const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+
+        if (!currentCharacterData) {
+            refineStatus.textContent = 'No character data to refine. Please generate or load a character first.';
+            refineStatus.className = 'error';
+            return;
+        }
+
+        if (!refinePrompt) {
+            refineStatus.textContent = 'Please enter refinement instructions';
+            refineStatus.className = 'error';
+            return;
+        }
+
+        if (!selectedModel) {
+            refineStatus.textContent = 'Please select a model';
+            refineStatus.className = 'error';
+            return;
+        }
+
+        if (!apiKey) {
+            refineStatus.textContent = 'Please set your OpenRouter API key';
+            refineStatus.className = 'error';
+            return;
+        }
+
+        refineStatus.textContent = 'Refining character...';
+        refineStatus.className = '';
+        refineCharacterBtn.disabled = true;
+
+        try {
+            const response = await apiCall('/api/refine-character', {
+                method: 'POST',
+                headers: {
+                    'X-API-Key': apiKey
+                },
+                body: JSON.stringify({ 
+                    prompt: refinePrompt,
+                    model: selectedModel,
+                    currentCharacter: currentCharacterData
+                })
+            });
+
+            populateFormFields(response.character);
+            refineStatus.textContent = 'Character refined successfully';
+            refineStatus.className = 'success';
+            refinePromptInput.value = ''; // Clear the refinement prompt
+        } catch (error) {
+            console.error('Refinement error:', error);
+            refineStatus.textContent = `Error: ${error.message}`;
+            refineStatus.className = 'error';
+        } finally {
+            refineCharacterBtn.disabled = false;
+        }
+    });
 });

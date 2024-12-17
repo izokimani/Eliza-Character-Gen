@@ -383,6 +383,7 @@ textarea {
 /* Button groups */
 .button-group {
     display: flex;
+    flex-direction: row;
     gap: 8px;
     align-items: center;
 }
@@ -391,7 +392,7 @@ textarea {
 .input-group {
     display: flex;
     gap: 8px;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .input-group input,
@@ -1083,4 +1084,52 @@ gecko-coin-ticker-widget {
 .special-thanks-list li,
 .special-thanks-list li a {
     font-size: 14px;
+}
+
+/* Add these styles for the refinement section */
+#refine-prompt {
+    min-height: calc(1.6em * 2 + 24px); /* 2 lines + padding */
+    height: calc(1.6em * 2 + 24px);
+    resize: none;
+}
+
+#refine-status {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+#refine-status.error {
+    color: var(--e);
+}
+
+#refine-status.success {
+    color: var(--p);
+}
+
+.input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-group textarea {
+    flex: 1;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+}
+
+.button-group .action-button {
+    margin: 0;
+}
+
+/* Update the prompt textarea height */
+#character-prompt {
+    min-height: calc(1.6em * 3 + 24px);
+    height: calc(1.6em * 3 + 24px);
+    resize: none;
 }

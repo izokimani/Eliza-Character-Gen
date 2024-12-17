@@ -152,9 +152,14 @@
                         <label for="character-prompt">Character Description</label>
                         <div class="input-group">
                             <textarea id="character-prompt" placeholder="Describe your character in detail..."></textarea>
-                            <button id="generate-from-prompt" class="action-button generate-button" title="Generate from Prompt">
-                                <i class="fa-solid fa-bolt"></i>
-                            </button>
+                            <div class="button-group">
+                                <button id="generate-from-prompt" class="action-button generate-button" title="Generate from Prompt">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </button>
+                                <button id="refine-character" class="action-button generate-button" title="Refine existing character">
+                                    <i class="fa-solid fa-wand-sparkles"></i>
+                                </button>
+                            </div>
                         </div>
                         <div id="prompt-status"></div>
                     </div>

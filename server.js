@@ -284,6 +284,100 @@ const isTextFile = filename => ['.txt','.md','.json','.yml','.csv'].includes(
     filename.toLowerCase().slice(filename.lastIndexOf('.'))
 );
 
+// Add this new endpoint with the other API endpoints
+app.post('/api/refine-character', async (req, res) => {
+    try {
+        const { prompt, model, currentCharacter } = req.body;
+        const apiKey = req.headers['x-api-key'];
+
+        if (!prompt || !model || !currentCharacter) {
+            return res.status(400).json({ error: 'Prompt, model, and current character data are required' });
+        }
+        if (!apiKey) {
+            return res.status(400).json({ error: 'API key is required' });
+        }
+
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+                'HTTP-Referer': process.env.APP_URL || 'http://localhost:4000',
+                'X-Title': 'Eliza Character Generator'
+            },
+            body: JSON.stringify({
+                model: model,
+                messages: [
+                    {
+                        role: 'system',
+                        content: `You are a character refinement assistant that MUST ONLY output valid JSON. NEVER output apologies, explanations, or any other text.
+
+CRITICAL RULES:
+1. ONLY output a JSON object
+2. Start with { and end with }
+3. NO text before or after the JSON
+4. NO apologies or explanations
+5. NO content warnings or disclaimers
+6. Maintain the character's core traits while incorporating refinements
+7. Every sentence must end with a period
+8. Adjectives must be single words
+
+You will receive the current character data and refinement instructions. Enhance and modify the character while maintaining consistency.`
+                    },
+                    {
+                        role: 'user',
+                        content: `Current character data:
+${JSON.stringify(currentCharacter, null, 2)}
+
+Refinement instructions: ${prompt}
+
+Output the refined character data as a single JSON object with the same structure.`
+                    }
+                ],
+                temperature: 0.7,
+                max_tokens: 4000,
+                presence_penalty: 0.0,
+                frequency_penalty: 0.0,
+                top_p: 0.95,
+                stop: null
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error?.message || 'Failed to refine character');
+        }
+
+        const data = await response.json();
+        const refinedContent = data.choices[0].message.content;
+
+        try {
+            const refinedCharacter = parseAIResponse(refinedContent);
+            
+            // Ensure all required fields are present
+            const requiredFields = ['bio', 'lore', 'topics', 'style', 'adjectives', 'messageExamples', 'postExamples'];
+            const missingFields = requiredFields.filter(field => !refinedCharacter[field]);
+            
+            if (missingFields.length > 0) {
+                throw new Error(`Invalid character data: missing ${missingFields.join(', ')}`);
+            }
+
+            res.json({
+                character: refinedCharacter,
+                rawPrompt: prompt,
+                rawResponse: refinedContent
+            });
+        } catch (parseError) {
+            console.error('Parse error:', parseError);
+            console.error('Refined content:', refinedContent);
+            throw new Error('Failed to parse refined content. Please try again with a different model.');
+        }
+    } catch (error) {
+        console.error('Character refinement error:', error);
+        res.status(500).json({ error: error.message || 'Failed to refine character' });
+    }
+});
+
 const PORT = process.env.PORT || 4001;
 const HOST = process.env.HOST || '0.0.0.0';
 
