@@ -249,7 +249,7 @@ textarea {
 
 .backup-item {
     display: grid;
-    grid-template-columns: 1fr auto auto auto;
+    grid-template-columns: 1fr auto auto;
     gap: 8px;
     padding: 12px;
     border: 1px solid var(--b);
@@ -260,14 +260,6 @@ textarea {
 .backup-name {
     min-width: 0;
     padding: 6px 8px;
-}
-
-.backup-timestamp {
-    color: #666;
-    font-size: 0.8em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* Action buttons in backup items */
@@ -987,10 +979,6 @@ gecko-coin-ticker-widget {
     
     .backup-item {
         grid-template-columns: 1fr auto;
-    }
-    
-    .backup-timestamp {
-        grid-column: 1 / -1;
     }
     
     .message-example {
