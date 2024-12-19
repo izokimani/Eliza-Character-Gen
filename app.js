@@ -1006,36 +1006,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add this event listener with the other initialization code
     refineCharacterBtn.addEventListener('click', async () => {
-        const refinePrompt = refinePromptInput.value.trim();
+        const refinePrompt = characterPrompt.value.trim();
         const selectedModel = modelSelect.value;
         const apiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
 
         if (!currentCharacterData) {
-            refineStatus.textContent = 'No character data to refine. Please generate or load a character first.';
-            refineStatus.className = 'error';
+            promptStatus.textContent = 'No character data to refine. Please generate or load a character first.';
+            promptStatus.className = 'error';
             return;
         }
 
         if (!refinePrompt) {
-            refineStatus.textContent = 'Please enter refinement instructions';
-            refineStatus.className = 'error';
+            promptStatus.textContent = 'Please enter refinement instructions';
+            promptStatus.className = 'error';
             return;
         }
 
         if (!selectedModel) {
-            refineStatus.textContent = 'Please select a model';
-            refineStatus.className = 'error';
+            promptStatus.textContent = 'Please select a model';
+            promptStatus.className = 'error';
             return;
         }
 
         if (!apiKey) {
-            refineStatus.textContent = 'Please set your OpenRouter API key';
-            refineStatus.className = 'error';
+            promptStatus.textContent = 'Please set your OpenRouter API key';
+            promptStatus.className = 'error';
             return;
         }
 
-        refineStatus.textContent = 'Refining character...';
-        refineStatus.className = '';
+        promptStatus.textContent = 'Refining character...';
+        promptStatus.className = '';
         refineCharacterBtn.disabled = true;
 
         try {
@@ -1052,13 +1052,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             populateFormFields(response.character);
-            refineStatus.textContent = 'Character refined successfully';
-            refineStatus.className = 'success';
-            refinePromptInput.value = ''; // Clear the refinement prompt
+            promptStatus.textContent = 'Character refined successfully';
+            promptStatus.className = 'success';
+            characterPrompt.value = '';
         } catch (error) {
             console.error('Refinement error:', error);
-            refineStatus.textContent = `Error: ${error.message}`;
-            refineStatus.className = 'error';
+            promptStatus.textContent = `Error: ${error.message}`;
+            promptStatus.className = 'error';
         } finally {
             refineCharacterBtn.disabled = false;
         }
