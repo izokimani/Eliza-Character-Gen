@@ -4,7 +4,7 @@ A comprehensive web-based tool for creating, managing, and customizing AI charac
 
 ## Features
 
-### Character Generation
+### Character Generation & Refinement
 - **AI-Powered Generation**: Create characters using various AI models including:
   - OpenAI (GPT-4, GPT-3.5)
   - Anthropic (Claude 3, Claude 2)
@@ -13,6 +13,7 @@ A comprehensive web-based tool for creating, managing, and customizing AI charac
   - Mistral (Large, Medium, Small)
   - And more through OpenRouter API
 - **Custom Prompting**: Generate characters from detailed text descriptions
+- **Character Refinement**: Enhance existing characters with additional prompts while maintaining core traits
 - **Manual Creation**: Build characters from scratch with a structured interface
 
 ### Character Components
@@ -122,7 +123,13 @@ npm start
    - Click generate
    - Review and modify the generated character
 
-2. **Manual Creation**:
+2. **Refining a Character**:
+   - Load or generate an initial character
+   - Enter refinement instructions in the prompt
+   - Click the refinement button (wand icon)
+   - Review the enhanced character
+
+3. **Manual Creation**:
    - Fill in basic information
    - Add character details
    - Define conversation style
@@ -175,4 +182,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 For support, please:
 1. Check the [GitHub Issues](https://github.com/HowieDuhzit/Eliza-Character-Gen/issues)
-2. Join the [ai16z DAO](https://www.daos.fun/HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC) 
+2. Join the [ai16z DAO](https://www.daos.fun/HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC)
