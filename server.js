@@ -206,11 +206,12 @@ Generate a complete character profile as a single JSON object following the exac
         const data = await response.json();
         const generatedContent = data.choices[0].message.content;
 
-        console.log('Raw AI response:', generatedContent);
-
         try {
+            console.log('Raw AI response:', generatedContent);
             const characterData = parseAIResponse(generatedContent);
+            console.log('Parsed character:', characterData);
 
+            // Ensure all required fields are present
             const requiredFields = ['bio', 'lore', 'topics', 'style', 'adjectives', 'messageExamples', 'postExamples'];
             const missingFields = requiredFields.filter(field => !characterData[field]);
             
@@ -218,23 +219,26 @@ Generate a complete character profile as a single JSON object following the exac
                 throw new Error(`Invalid character data: missing ${missingFields.join(', ')}`);
             }
 
+            // Ensure all arrays are present and properly initialized
             characterData.bio = characterData.bio || [];
             characterData.lore = characterData.lore || [];
             characterData.topics = characterData.topics || [];
-            characterData.style = characterData.style || { all: [], chat: [], post: [] };
-            characterData.adjectives = characterData.adjectives || [];
+            characterData.knowledge = characterData.knowledge || [];
             characterData.messageExamples = characterData.messageExamples || [];
             characterData.postExamples = characterData.postExamples || [];
+            characterData.adjectives = characterData.adjectives || [];
+            characterData.people = characterData.people || [];
+            characterData.style = characterData.style || { all: [], chat: [], post: [] };
 
             res.json({
                 character: characterData,
-                rawPrompt: req.body.prompt,
+                rawPrompt: prompt,
                 rawResponse: generatedContent
             });
         } catch (parseError) {
             console.error('Parse error:', parseError);
             console.error('Generated content:', generatedContent);
-            throw new Error('Failed to parse generated content. Please try again with a different model.');
+            throw new Error(`Failed to parse generated content: ${parseError.message}`);
         }
     } catch (error) {
         console.error('Character generation error:', error);
