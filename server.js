@@ -179,8 +179,9 @@ CRITICAL RULES:
 5. NO content warnings or disclaimers
 6. Every sentence must end with a period
 7. Adjectives must be single words
-8. Extract knowledge from the prompt and create knowledge entries
-9. Use the suggested name if provided, or generate an appropriate one
+8. Knowledge entries MUST be an array of strings, each ending with a period
+9. Each knowledge entry MUST be a complete sentence
+10. Use the suggested name if provided, or generate an appropriate one
 
 You will receive a character description and template. Generate a complete character profile.`
                     },
@@ -224,12 +225,30 @@ Generate a complete character profile as a single JSON object following the exac
                 throw new Error(`Invalid character data: missing ${missingFields.join(', ')}`);
             }
 
-            // Ensure all arrays are present and properly initialized
+            // Process knowledge entries specifically
+            if (characterData.knowledge) {
+                characterData.knowledge = Array.isArray(characterData.knowledge) ? 
+                    characterData.knowledge.map(entry => {
+                        if (typeof entry === 'string') {
+                            return entry.endsWith('.') ? entry : entry + '.';
+                        }
+                        if (typeof entry === 'object' && entry !== null) {
+                            // If it's an object, try to extract meaningful text
+                            const text = entry.text || entry.content || entry.value || entry.toString();
+                            return typeof text === 'string' ? 
+                                (text.endsWith('.') ? text : text + '.') : 
+                                'Invalid knowledge entry.';
+                        }
+                        return 'Invalid knowledge entry.';
+                    }) : [];
+            } else {
+                characterData.knowledge = [];
+            }
+
+            // Ensure all other arrays are properly initialized
             characterData.bio = Array.isArray(characterData.bio) ? characterData.bio : [];
             characterData.lore = Array.isArray(characterData.lore) ? characterData.lore : [];
             characterData.topics = Array.isArray(characterData.topics) ? characterData.topics : [];
-            characterData.knowledge = Array.isArray(characterData.knowledge) ? 
-                characterData.knowledge.map(k => typeof k === 'string' ? k : k.toString()) : [];
             characterData.messageExamples = Array.isArray(characterData.messageExamples) ? characterData.messageExamples : [];
             characterData.postExamples = Array.isArray(characterData.postExamples) ? characterData.postExamples : [];
             characterData.adjectives = Array.isArray(characterData.adjectives) ? characterData.adjectives : [];
