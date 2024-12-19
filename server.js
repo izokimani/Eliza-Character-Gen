@@ -43,43 +43,43 @@ await fs.mkdir('uploads', { recursive: true }).catch(console.error);
 const parseAIResponse = (content) => {
     console.log('Original content:', content);
 
-    if (!content.includes('}')) {
-        throw new Error('Incomplete JSON response: missing closing brace');
-    }
-
-    const startIndex = content.indexOf('{');
-    const endIndex = content.lastIndexOf('}');
-    
-    if (startIndex === -1 || endIndex === -1) {
-        throw new Error('No complete JSON object found in response');
-    }
-
-    let jsonContent = content.substring(startIndex, endIndex + 1);
-    console.log('Extracted JSON content:', jsonContent);
-
-    const openBraces = (jsonContent.match(/\{/g) || []).length;
-    const closeBraces = (jsonContent.match(/\}/g) || []).length;
-    
-    if (openBraces !== closeBraces) {
-        throw new Error(`Unmatched braces: ${openBraces} opening vs ${closeBraces} closing`);
-    }
-
-    jsonContent = jsonContent
-        .replace(/\n/g, ' ')
-        .replace(/,\s*([}\]])/g, '$1')
-        .replace(/([{,])\s*}/g, '}')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-    console.log('Cleaned JSON content:', jsonContent);
-
     try {
-        const parsed = JSON.parse(jsonContent);
-        console.log('Successfully parsed cleaned JSON');
-        return parsed;
-    } catch (error) {
-        console.log('Failed to parse cleaned JSON:', error);
-        throw new Error(`Failed to parse JSON content: ${error.message}`);
+        // First try direct JSON parse
+        return JSON.parse(content);
+    } catch (directParseError) {
+        console.log('Direct parse failed, attempting cleanup');
+
+        // Find the JSON object boundaries
+        const startIndex = content.indexOf('{');
+        const endIndex = content.lastIndexOf('}');
+        
+        if (startIndex === -1 || endIndex === -1) {
+            throw new Error('No complete JSON object found in response');
+        }
+
+        let jsonContent = content.substring(startIndex, endIndex + 1);
+        
+        // Clean up common issues
+        jsonContent = jsonContent
+            .replace(/,\s*}/g, '}')  // Remove trailing commas
+            .replace(/,\s*]/g, ']')  // Remove trailing commas in arrays
+            .replace(/\{\s*\}/g, '{}')  // Normalize empty objects
+            .replace(/\[\s*\]/g, '[]')  // Normalize empty arrays
+            .replace(/"\s*:\s*undefined/g, '": null')  // Replace undefined with null
+            .replace(/"\s*:\s*,/g, '": null,')  // Fix empty values
+            .replace(/"\s*:\s*}/g, '": null}')  // Fix empty values at end
+            .replace(/\n/g, ' ')  // Remove newlines
+            .replace(/\s+/g, ' ')  // Normalize whitespace
+            .trim();
+
+        console.log('Cleaned JSON content:', jsonContent);
+
+        try {
+            return JSON.parse(jsonContent);
+        } catch (cleanupParseError) {
+            console.error('Parse error after cleanup:', cleanupParseError);
+            throw new Error(`Failed to parse JSON content: ${cleanupParseError.message}`);
+        }
     }
 };
 
@@ -134,11 +134,16 @@ app.post('/api/generate-character', async (req, res) => {
             name: suggestedName,
             clients: [],
             modelProvider: "",
-            settings: { secrets: {}, voice: { model: "" } },
+            settings: {
+                secrets: {},  // Changed from empty object to properly nested structure
+                voice: {
+                    model: ""
+                }
+            },
             plugins: [],
             bio: [],
             lore: [],
-            knowledge: [],  // Will be populated based on prompt
+            knowledge: [],
             messageExamples: [],
             postExamples: [],
             topics: [],
