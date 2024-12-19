@@ -225,15 +225,21 @@ Generate a complete character profile as a single JSON object following the exac
             }
 
             // Ensure all arrays are present and properly initialized
-            characterData.bio = characterData.bio || [];
-            characterData.lore = characterData.lore || [];
-            characterData.topics = characterData.topics || [];
-            characterData.knowledge = characterData.knowledge || [];
-            characterData.messageExamples = characterData.messageExamples || [];
-            characterData.postExamples = characterData.postExamples || [];
-            characterData.adjectives = characterData.adjectives || [];
-            characterData.people = characterData.people || [];
+            characterData.bio = Array.isArray(characterData.bio) ? characterData.bio : [];
+            characterData.lore = Array.isArray(characterData.lore) ? characterData.lore : [];
+            characterData.topics = Array.isArray(characterData.topics) ? characterData.topics : [];
+            characterData.knowledge = Array.isArray(characterData.knowledge) ? 
+                characterData.knowledge.map(k => typeof k === 'string' ? k : k.toString()) : [];
+            characterData.messageExamples = Array.isArray(characterData.messageExamples) ? characterData.messageExamples : [];
+            characterData.postExamples = Array.isArray(characterData.postExamples) ? characterData.postExamples : [];
+            characterData.adjectives = Array.isArray(characterData.adjectives) ? characterData.adjectives : [];
+            characterData.people = Array.isArray(characterData.people) ? characterData.people : [];
             characterData.style = characterData.style || { all: [], chat: [], post: [] };
+
+            // Ensure style arrays are properly initialized
+            characterData.style.all = Array.isArray(characterData.style.all) ? characterData.style.all : [];
+            characterData.style.chat = Array.isArray(characterData.style.chat) ? characterData.style.chat : [];
+            characterData.style.post = Array.isArray(characterData.style.post) ? characterData.style.post : [];
 
             res.json({
                 character: characterData,
