@@ -397,8 +397,9 @@ CRITICAL RULES:
 6. Maintain the character's core traits while incorporating refinements
 7. Every sentence must end with a period
 8. Adjectives must be single words
-9. ${hasExistingKnowledge ? 'DO NOT modify or remove existing knowledge entries' : 'Create new knowledge entries based on the refinement instructions'}
-10. Use the new name if provided in the refinement instructions
+9. Knowledge entries MUST be an array of strings, each ending with a period
+10. Each knowledge entry MUST be a complete sentence
+11. Use the new name if provided in the refinement instructions
 
 You will receive the current character data and refinement instructions. Enhance and modify the character while maintaining consistency.`
                     },
@@ -445,21 +446,45 @@ Output the refined character data as a single JSON object following the exact te
                 throw new Error(`Invalid character data: missing ${missingFields.join(', ')}`);
             }
 
+            // Process knowledge entries specifically
+            if (refinedCharacter.knowledge) {
+                refinedCharacter.knowledge = Array.isArray(refinedCharacter.knowledge) ? 
+                    refinedCharacter.knowledge.map(entry => {
+                        if (typeof entry === 'string') {
+                            return entry.endsWith('.') ? entry : entry + '.';
+                        }
+                        if (typeof entry === 'object' && entry !== null) {
+                            // If it's an object, try to extract meaningful text
+                            const text = entry.text || entry.content || entry.value || entry.toString();
+                            return typeof text === 'string' ? 
+                                (text.endsWith('.') ? text : text + '.') : 
+                                'Invalid knowledge entry.';
+                        }
+                        return 'Invalid knowledge entry.';
+                    }) : [];
+            } else {
+                refinedCharacter.knowledge = [];
+            }
+
             // If there's existing knowledge, preserve it
-            // Otherwise, use any new knowledge created by the AI
             if (hasExistingKnowledge) {
                 refinedCharacter.knowledge = existingKnowledge;
             }
 
-            // Ensure all arrays are present
-            refinedCharacter.bio = refinedCharacter.bio || [];
-            refinedCharacter.lore = refinedCharacter.lore || [];
-            refinedCharacter.topics = refinedCharacter.topics || [];
-            refinedCharacter.messageExamples = refinedCharacter.messageExamples || [];
-            refinedCharacter.postExamples = refinedCharacter.postExamples || [];
-            refinedCharacter.adjectives = refinedCharacter.adjectives || [];
-            refinedCharacter.people = refinedCharacter.people || [];
+            // Ensure all arrays are properly initialized
+            refinedCharacter.bio = Array.isArray(refinedCharacter.bio) ? refinedCharacter.bio : [];
+            refinedCharacter.lore = Array.isArray(refinedCharacter.lore) ? refinedCharacter.lore : [];
+            refinedCharacter.topics = Array.isArray(refinedCharacter.topics) ? refinedCharacter.topics : [];
+            refinedCharacter.messageExamples = Array.isArray(refinedCharacter.messageExamples) ? refinedCharacter.messageExamples : [];
+            refinedCharacter.postExamples = Array.isArray(refinedCharacter.postExamples) ? refinedCharacter.postExamples : [];
+            refinedCharacter.adjectives = Array.isArray(refinedCharacter.adjectives) ? refinedCharacter.adjectives : [];
+            refinedCharacter.people = Array.isArray(refinedCharacter.people) ? refinedCharacter.people : [];
             refinedCharacter.style = refinedCharacter.style || { all: [], chat: [], post: [] };
+
+            // Ensure style arrays are properly initialized
+            refinedCharacter.style.all = Array.isArray(refinedCharacter.style.all) ? refinedCharacter.style.all : [];
+            refinedCharacter.style.chat = Array.isArray(refinedCharacter.style.chat) ? refinedCharacter.style.chat : [];
+            refinedCharacter.style.post = Array.isArray(refinedCharacter.style.post) ? refinedCharacter.style.post : [];
 
             res.json({
                 character: refinedCharacter,
