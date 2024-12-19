@@ -13,7 +13,11 @@ A comprehensive web-based tool for creating, managing, and customizing AI charac
   - Mistral (Large, Medium, Small)
   - And more through OpenRouter API
 - **Custom Prompting**: Generate characters from detailed text descriptions
-- **Character Refinement**: Enhance existing characters with additional prompts while maintaining core traits
+- **Character Refinement**: 
+  - Enhance existing characters with additional prompts
+  - Maintain core traits while adding new features
+  - Preserve or expand knowledge base
+  - Update character attributes seamlessly
 - **Manual Creation**: Build characters from scratch with a structured interface
 
 ### Character Components
@@ -52,6 +56,8 @@ A comprehensive web-based tool for creating, managing, and customizing AI charac
 - **Auto-Save System**
   - Automatic backups every 5 minutes
   - Named backup creation
+  - Compact backup display
+  - Hover timestamps
   - Backup management interface
   - Backup restoration
 
@@ -64,6 +70,10 @@ A comprehensive web-based tool for creating, managing, and customizing AI charac
   - Desktop optimization
   - Tablet support
   - Mobile-friendly layout
+- **Compact Layout**
+  - Scrollable backup list
+  - Efficient space utilization
+  - Organized sections
 
 ### File Management
 - **Import/Export**
@@ -120,13 +130,13 @@ npm start
 1. **Using AI Generation**:
    - Select an AI model
    - Enter a character description
-   - Click generate
+   - Click the lightning bolt icon to generate
    - Review and modify the generated character
 
 2. **Refining a Character**:
    - Load or generate an initial character
    - Enter refinement instructions in the prompt
-   - Click the refinement button (wand icon)
+   - Click the wand icon to refine
    - Review the enhanced character
 
 3. **Manual Creation**:
@@ -151,6 +161,8 @@ npm start
 1. **Auto-Save**:
    - Work is automatically saved every 5 minutes
    - Create named backups for important versions
+   - View backup timestamps on hover
+   - Manage backups in scrollable list
 
 2. **Export**:
    - Generate final JSON
