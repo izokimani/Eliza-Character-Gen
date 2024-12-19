@@ -297,7 +297,8 @@ app.post('/api/refine-character', async (req, res) => {
             return res.status(400).json({ error: 'API key is required' });
         }
 
-        // Store existing knowledge
+        // Store existing knowledge if it exists
+        const hasExistingKnowledge = Array.isArray(currentCharacter.knowledge) && currentCharacter.knowledge.length > 0;
         const existingKnowledge = currentCharacter.knowledge || [];
 
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -324,7 +325,7 @@ CRITICAL RULES:
 6. Maintain the character's core traits while incorporating refinements
 7. Every sentence must end with a period
 8. Adjectives must be single words
-9. DO NOT modify or remove existing knowledge entries
+${hasExistingKnowledge ? '9. DO NOT modify or remove existing knowledge entries' : '9. Create new knowledge entries based on the refinement instructions'}
 
 You will receive the current character data and refinement instructions. Enhance and modify the character while maintaining consistency.`
                     },
@@ -335,7 +336,7 @@ ${JSON.stringify(currentCharacter, null, 2)}
 
 Refinement instructions: ${prompt}
 
-Output the refined character data as a single JSON object with the same structure. DO NOT modify the existing knowledge array.`
+Output the refined character data as a single JSON object with the same structure. ${hasExistingKnowledge ? 'DO NOT modify the existing knowledge array.' : 'Create new knowledge entries if appropriate.'}`
                     }
                 ],
                 temperature: 0.7,
@@ -366,8 +367,11 @@ Output the refined character data as a single JSON object with the same structur
                 throw new Error(`Invalid character data: missing ${missingFields.join(', ')}`);
             }
 
-            // Preserve existing knowledge and add any new knowledge
-            refinedCharacter.knowledge = existingKnowledge;
+            // If there's existing knowledge, preserve it
+            // Otherwise, use any new knowledge created by the AI
+            if (hasExistingKnowledge) {
+                refinedCharacter.knowledge = existingKnowledge;
+            }
 
             res.json({
                 character: refinedCharacter,
