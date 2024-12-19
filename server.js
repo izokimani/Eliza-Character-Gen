@@ -125,6 +125,32 @@ app.post('/api/generate-character', async (req, res) => {
             return res.status(400).json({ error: 'API key is required' });
         }
 
+        // Extract potential name from the prompt
+        const nameMatch = prompt.match(/name(?:\s+is)?(?:\s*:)?\s*([A-Z][a-zA-Z\s]+?)(?:\.|\s|$)/i);
+        const suggestedName = nameMatch ? nameMatch[1].trim() : '';
+
+        // Create a template for consistent structure
+        const template = {
+            name: suggestedName,
+            clients: [],
+            modelProvider: "",
+            settings: { secrets: {}, voice: { model: "" } },
+            plugins: [],
+            bio: [],
+            lore: [],
+            knowledge: [],  // Will be populated based on prompt
+            messageExamples: [],
+            postExamples: [],
+            topics: [],
+            style: {
+                all: [],
+                chat: [],
+                post: []
+            },
+            adjectives: [],
+            people: []
+        };
+
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -138,44 +164,29 @@ app.post('/api/generate-character', async (req, res) => {
                 messages: [
                     {
                         role: 'system',
-                        content: `You are a character creation assistant that MUST ONLY output valid JSON. NEVER output apologies, explanations, or any other text.
+                        content: `You are a character generation assistant that MUST ONLY output valid JSON. NEVER output apologies, explanations, or any other text.
 
 CRITICAL RULES:
-1. ONLY output a JSON object
+1. ONLY output a JSON object following the exact template structure provided
 2. Start with { and end with }
 3. NO text before or after the JSON
 4. NO apologies or explanations
 5. NO content warnings or disclaimers
-6. If you have concerns, express them through the JSON content itself
+6. Every sentence must end with a period
+7. Adjectives must be single words
+8. Extract knowledge from the prompt and create knowledge entries
+9. Use the suggested name if provided, or generate an appropriate one
 
-If you receive a prompt that concerns you, create an appropriate character that aligns with positive values while staying within the JSON format.
-
-Every sentence must end with a period. Adjectives must be single words.`
+You will receive a character description and template. Generate a complete character profile.`
                     },
                     {
                         role: 'user',
-                        content: `Output ONLY this JSON structure with appropriate content. NO other text allowed:
+                        content: `Template to follow:
+${JSON.stringify(template, null, 2)}
 
-{
-  "bio": ["Multiple detailed sentences about background and personality"],
-  "lore": ["Multiple sentences about history and world"],
-  "topics": ["Multiple sentences about interests and knowledge"],
-  "style": {
-    "all": ["Multiple sentences about speaking style and mannerisms"],
-    "chat": ["Multiple sentences about chat behavior"],
-    "post": ["Multiple sentences about posting style"]
-  },
-  "adjectives": ["single", "word", "traits"],
-  "messageExamples": [
-    [
-      {"user": "{{user1}}", "content": {"text": "User message"}},
-      {"user": "character", "content": {"text": "Character response"}}
-    ]
-  ],
-  "postExamples": ["Multiple example posts"]
-}
+Character description: ${prompt}
 
-Character description: ${prompt}`
+Generate a complete character profile as a single JSON object following the exact template structure. Include relevant knowledge entries based on the description.`
                     }
                 ],
                 temperature: 0.7,
@@ -297,9 +308,36 @@ app.post('/api/refine-character', async (req, res) => {
             return res.status(400).json({ error: 'API key is required' });
         }
 
-        // Store existing knowledge if it exists
+        // Store existing knowledge and name
         const hasExistingKnowledge = Array.isArray(currentCharacter.knowledge) && currentCharacter.knowledge.length > 0;
         const existingKnowledge = currentCharacter.knowledge || [];
+        const existingName = currentCharacter.name || "";
+
+        // Extract potential new name from the prompt
+        const nameMatch = prompt.match(/name(?:\s+is)?(?:\s*:)?\s*([A-Z][a-zA-Z\s]+?)(?:\.|\s|$)/i);
+        const newName = nameMatch ? nameMatch[1].trim() : existingName;
+
+        // Create a template for the AI to follow
+        const template = {
+            name: newName,
+            clients: currentCharacter.clients || [],
+            modelProvider: currentCharacter.modelProvider || "",
+            settings: currentCharacter.settings || { secrets: {}, voice: { model: "" } },
+            plugins: currentCharacter.plugins || [],
+            bio: [],
+            lore: [],
+            knowledge: hasExistingKnowledge ? existingKnowledge : [],
+            messageExamples: [],
+            postExamples: [],
+            topics: [],
+            style: {
+                all: [],
+                chat: [],
+                post: []
+            },
+            adjectives: [],
+            people: currentCharacter.people || []
+        };
 
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
@@ -317,7 +355,7 @@ app.post('/api/refine-character', async (req, res) => {
                         content: `You are a character refinement assistant that MUST ONLY output valid JSON. NEVER output apologies, explanations, or any other text.
 
 CRITICAL RULES:
-1. ONLY output a JSON object
+1. ONLY output a JSON object following the exact template structure provided
 2. Start with { and end with }
 3. NO text before or after the JSON
 4. NO apologies or explanations
@@ -325,7 +363,8 @@ CRITICAL RULES:
 6. Maintain the character's core traits while incorporating refinements
 7. Every sentence must end with a period
 8. Adjectives must be single words
-${hasExistingKnowledge ? '9. DO NOT modify or remove existing knowledge entries' : '9. Create new knowledge entries based on the refinement instructions'}
+9. ${hasExistingKnowledge ? 'DO NOT modify or remove existing knowledge entries' : 'Create new knowledge entries based on the refinement instructions'}
+10. Use the new name if provided in the refinement instructions
 
 You will receive the current character data and refinement instructions. Enhance and modify the character while maintaining consistency.`
                     },
@@ -334,9 +373,12 @@ You will receive the current character data and refinement instructions. Enhance
                         content: `Current character data:
 ${JSON.stringify(currentCharacter, null, 2)}
 
+Template to follow:
+${JSON.stringify(template, null, 2)}
+
 Refinement instructions: ${prompt}
 
-Output the refined character data as a single JSON object with the same structure. ${hasExistingKnowledge ? 'DO NOT modify the existing knowledge array.' : 'Create new knowledge entries if appropriate.'}`
+Output the refined character data as a single JSON object following the exact template structure. ${hasExistingKnowledge ? 'DO NOT modify the existing knowledge array.' : 'Create new knowledge entries if appropriate.'}`
                     }
                 ],
                 temperature: 0.7,
@@ -357,7 +399,9 @@ Output the refined character data as a single JSON object with the same structur
         const refinedContent = data.choices[0].message.content;
 
         try {
+            console.log('Raw AI response:', refinedContent);
             const refinedCharacter = parseAIResponse(refinedContent);
+            console.log('Parsed character:', refinedCharacter);
             
             // Ensure all required fields are present
             const requiredFields = ['bio', 'lore', 'topics', 'style', 'adjectives', 'messageExamples', 'postExamples'];
@@ -373,6 +417,16 @@ Output the refined character data as a single JSON object with the same structur
                 refinedCharacter.knowledge = existingKnowledge;
             }
 
+            // Ensure all arrays are present
+            refinedCharacter.bio = refinedCharacter.bio || [];
+            refinedCharacter.lore = refinedCharacter.lore || [];
+            refinedCharacter.topics = refinedCharacter.topics || [];
+            refinedCharacter.messageExamples = refinedCharacter.messageExamples || [];
+            refinedCharacter.postExamples = refinedCharacter.postExamples || [];
+            refinedCharacter.adjectives = refinedCharacter.adjectives || [];
+            refinedCharacter.people = refinedCharacter.people || [];
+            refinedCharacter.style = refinedCharacter.style || { all: [], chat: [], post: [] };
+
             res.json({
                 character: refinedCharacter,
                 rawPrompt: prompt,
@@ -381,7 +435,7 @@ Output the refined character data as a single JSON object with the same structur
         } catch (parseError) {
             console.error('Parse error:', parseError);
             console.error('Refined content:', refinedContent);
-            throw new Error('Failed to parse refined content. Please try again with a different model.');
+            throw new Error(`Failed to parse refined content: ${parseError.message}`);
         }
     } catch (error) {
         console.error('Character refinement error:', error);
