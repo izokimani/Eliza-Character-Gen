@@ -297,6 +297,9 @@ app.post('/api/refine-character', async (req, res) => {
             return res.status(400).json({ error: 'API key is required' });
         }
 
+        // Store existing knowledge
+        const existingKnowledge = currentCharacter.knowledge || [];
+
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -321,6 +324,7 @@ CRITICAL RULES:
 6. Maintain the character's core traits while incorporating refinements
 7. Every sentence must end with a period
 8. Adjectives must be single words
+9. DO NOT modify or remove existing knowledge entries
 
 You will receive the current character data and refinement instructions. Enhance and modify the character while maintaining consistency.`
                     },
@@ -331,7 +335,7 @@ ${JSON.stringify(currentCharacter, null, 2)}
 
 Refinement instructions: ${prompt}
 
-Output the refined character data as a single JSON object with the same structure.`
+Output the refined character data as a single JSON object with the same structure. DO NOT modify the existing knowledge array.`
                     }
                 ],
                 temperature: 0.7,
@@ -361,6 +365,9 @@ Output the refined character data as a single JSON object with the same structur
             if (missingFields.length > 0) {
                 throw new Error(`Invalid character data: missing ${missingFields.join(', ')}`);
             }
+
+            // Preserve existing knowledge and add any new knowledge
+            refinedCharacter.knowledge = existingKnowledge;
 
             res.json({
                 character: refinedCharacter,
