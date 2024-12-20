@@ -1,12 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Add this at the top to check if styles are loading
-    const styles = getComputedStyle(document.documentElement);
-    console.log('CSS Variables loaded:', {
-        background: styles.getPropertyValue('--bg'),
-        text: styles.getPropertyValue('--t'),
-        primary: styles.getPropertyValue('--p')
-    });
-
     // Track mouse position for tooltips
     document.addEventListener('mousemove', (e) => {
         document.documentElement.style.setProperty('--mouse-x', `${e.clientX + 20}px`);
@@ -1076,23 +1068,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const affiliateToggle = document.getElementById('affiliate-toggle');
     const affiliatePanel = document.querySelector('.affiliate-panel');
 
-    console.log('Toggle:', affiliateToggle);  // Debug log
-    console.log('Panel:', affiliatePanel);    // Debug log
-    console.log('Panel content:', affiliatePanel?.innerHTML);  // Debug log
+    affiliateToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        affiliateToggle.classList.toggle('active');
+        affiliatePanel.classList.toggle('active');
+    });
 
-    if (affiliateToggle && affiliatePanel) {
-        affiliateToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            affiliateToggle.classList.toggle('active');
-            affiliatePanel.classList.toggle('active');
-            console.log('Panel clicked, active:', affiliatePanel.classList.contains('active')); // Debug log
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!affiliatePanel.contains(e.target) && !affiliateToggle.contains(e.target)) {
-                affiliateToggle.classList.remove('active');
-                affiliatePanel.classList.remove('active');
-            }
-        });
-    }
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!affiliatePanel.contains(e.target) && !affiliateToggle.contains(e.target)) {
+            affiliateToggle.classList.remove('active');
+            affiliatePanel.classList.remove('active');
+        }
+    });
 });
