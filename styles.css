@@ -1183,15 +1183,10 @@ gecko-coin-ticker-widget {
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .affiliate-panel.active {
     display: block;
-    opacity: 1;
-    visibility: visible;
 }
 
 .affiliate-link {
@@ -1203,17 +1198,28 @@ gecko-coin-ticker-widget {
     text-decoration: none;
     border-radius: 4px;
     transition: all 0.2s ease;
+    min-width: max-content;
+}
+
+.affiliate-link span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     white-space: nowrap;
 }
 
-.affiliate-link:hover {
-    background: var(--p);
-    color: white;
+.affiliate-link-text, 
+.credit-link {
+    text-decoration: none;
+    color: var(--t);
+    white-space: nowrap;
 }
 
-.affiliate-link i {
-    width: 16px;
-    text-align: center;
+.affiliate-link:hover,
+.affiliate-link:hover .affiliate-link-text,
+.affiliate-link:hover .credit-link {
+    color: white;
+    background: var(--p);
 }
 
 /* Update mobile styles */

@@ -1069,31 +1069,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const affiliatePanel = document.querySelector('.affiliate-panel');
 
     if (affiliateToggle && affiliatePanel) {
-        // Initialize panel state
-        affiliatePanel.style.display = 'none';
-
         affiliateToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isActive = affiliatePanel.classList.contains('active');
-            
-            // Toggle panel visibility
-            affiliatePanel.style.display = isActive ? 'none' : 'block';
-            affiliatePanel.classList.toggle('active');
             affiliateToggle.classList.toggle('active');
+            affiliatePanel.classList.toggle('active');
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!affiliatePanel.contains(e.target) && !affiliateToggle.contains(e.target)) {
-                affiliatePanel.style.display = 'none';
-                affiliatePanel.classList.remove('active');
                 affiliateToggle.classList.remove('active');
+                affiliatePanel.classList.remove('active');
             }
-        });
-
-        // Prevent panel from closing when clicking inside it
-        affiliatePanel.addEventListener('click', (e) => {
-            e.stopPropagation();
         });
     }
 });
