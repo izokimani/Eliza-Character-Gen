@@ -1180,25 +1180,23 @@ gecko-coin-ticker-widget {
     border-radius: 8px;
     padding: 8px;
     width: auto;
-    height: auto;
     min-width: max-content;
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
+    opacity: 1;
+    visibility: visible;
 }
 
 .affiliate-panel.active {
-    display: block !important;
+    display: block;
 }
 
-.affiliate-link {
-    display: flex !important;
+.affiliate-content {
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px;
-    color: var(--t);
-    text-decoration: none;
-    white-space: nowrap;
+    padding: 4px;
 }
 
 .affiliate-icon {
@@ -1206,23 +1204,21 @@ gecko-coin-ticker-widget {
     height: 16px;
     border-radius: 50%;
     object-fit: cover;
-    flex-shrink: 0;
 }
 
-.affiliate-link span {
-    display: inline-flex !important;
+.affiliate-links {
+    display: flex;
     align-items: center;
-    gap: 12px;  /* Increased gap between links */
+    gap: 12px;
     white-space: nowrap;
 }
 
-/* Individual link styles */
 .affiliate-link-text,
 .credit-link {
     padding: 4px 8px;
     border-radius: 4px;
-    transition: all 0.2s ease;
     text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .affiliate-link-text {
@@ -1233,14 +1229,8 @@ gecko-coin-ticker-widget {
     color: var(--p);
 }
 
-/* Hover states for individual links */
 .affiliate-link-text:hover,
 .credit-link:hover {
     background: var(--p);
     color: white;
-}
-
-/* Remove the parent hover effect and the dash */
-.affiliate-link:hover {
-    background: transparent;
 }
