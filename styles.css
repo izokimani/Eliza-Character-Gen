@@ -1134,7 +1134,7 @@ gecko-coin-ticker-widget {
     resize: none;
 }
 
-/* Add these styles for the affiliate dropdown */
+/* Affiliate dropdown styles */
 .affiliate-dropdown {
     position: relative;
     display: inline-block;
@@ -1179,7 +1179,7 @@ gecko-coin-ticker-widget {
     border: 1px solid var(--b);
     border-radius: 8px;
     padding: 8px;
-    width: fit-content;
+    min-width: max-content;
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
@@ -1189,49 +1189,6 @@ gecko-coin-ticker-widget {
     display: block;
 }
 
-.affiliate-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    color: var(--t);
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    min-width: max-content;
-}
-
-.affiliate-link span {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
-}
-
-.affiliate-link-text, 
-.credit-link {
-    text-decoration: none;
-    color: var(--t);
-    white-space: nowrap;
-}
-
-.affiliate-link:hover,
-.affiliate-link:hover .affiliate-link-text,
-.affiliate-link:hover .credit-link {
-    color: white;
-    background: var(--p);
-}
-
-/* Update mobile styles */
-@media (max-width: 768px) {
-    .affiliate-panel {
-        right: -70px;
-        max-width: calc(100vw - 48px);
-        overflow: hidden;
-    }
-}
-
-/* Add these styles for the affiliate icon and credit link */
 .affiliate-icon {
     width: 16px;
     height: 16px;
@@ -1248,6 +1205,7 @@ gecko-coin-ticker-widget {
     text-decoration: none;
     border-radius: 4px;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .affiliate-link span {
@@ -1257,34 +1215,29 @@ gecko-coin-ticker-widget {
     white-space: nowrap;
 }
 
-.credit-link {
-    color: var(--p);
-    text-decoration: none;
-    font-size: 0.9em;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-}
-
-.credit-link:hover {
-    opacity: 1;
-}
-
-.affiliate-link:hover {
-    background: var(--p);
-    color: white;
-}
-
-.affiliate-link:hover .credit-link {
-    color: white;
-    opacity: 1;
-}
-
-/* Update the link text styles */
 .affiliate-link-text {
     text-decoration: none;
     color: var(--t);
 }
 
-.affiliate-link-text:hover {
+.credit-link {
+    color: var(--p);
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.affiliate-link:hover {
+    background: var(--p);
+}
+
+.affiliate-link:hover .affiliate-link-text,
+.affiliate-link:hover .credit-link {
     color: white;
+}
+
+@media (max-width: 768px) {
+    .affiliate-panel {
+        right: -70px;
+        max-width: calc(100vw - 48px);
+    }
 }
