@@ -1133,3 +1133,86 @@ gecko-coin-ticker-widget {
     height: calc(1.6em * 3 + 24px);
     resize: none;
 }
+
+/* Add these styles for the affiliate dropdown */
+.affiliate-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.affiliate-toggle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--b);
+    background: var(--s);
+    color: var(--t);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+.affiliate-toggle:hover {
+    background: var(--p);
+    color: white;
+    border-color: var(--p);
+}
+
+.affiliate-toggle .external-icon {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+}
+
+.affiliate-toggle.active .external-icon {
+    transform: rotate(180deg);
+}
+
+.affiliate-panel {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: var(--s);
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    padding: 8px;
+    min-width: 160px;
+    display: none;
+    box-shadow: var(--sh);
+    z-index: 1000;
+}
+
+.affiliate-panel.active {
+    display: block;
+}
+
+.affiliate-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    color: var(--t);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.affiliate-link:hover {
+    background: var(--p);
+    color: white;
+}
+
+.affiliate-link i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Add this to the existing media queries */
+@media (max-width: 768px) {
+    .affiliate-panel {
+        right: -70px; /* Adjust position for mobile */
+    }
+}

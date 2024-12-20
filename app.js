@@ -1063,4 +1063,22 @@ document.addEventListener('DOMContentLoaded', () => {
             refineCharacterBtn.disabled = false;
         }
     });
+
+    // Affiliate dropdown functionality
+    const affiliateToggle = document.getElementById('affiliate-toggle');
+    const affiliatePanel = document.querySelector('.affiliate-panel');
+
+    affiliateToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        affiliateToggle.classList.toggle('active');
+        affiliatePanel.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!affiliatePanel.contains(e.target) && !affiliateToggle.contains(e.target)) {
+            affiliateToggle.classList.remove('active');
+            affiliatePanel.classList.remove('active');
+        }
+    });
 });
