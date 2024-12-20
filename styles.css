@@ -1179,101 +1179,68 @@ gecko-coin-ticker-widget {
     border: 1px solid var(--b);
     border-radius: 8px;
     padding: 8px;
-    width: fit-content;
+    width: auto;
+    height: auto;
+    min-width: max-content;
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
 }
 
 .affiliate-panel.active {
-    display: block;
+    display: block !important;
 }
 
 .affiliate-link {
-    display: flex;
+    display: flex !important;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 8px;
     color: var(--t);
     text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.2s ease;
     white-space: nowrap;
 }
 
-.affiliate-link:hover {
-    background: var(--p);
-    color: white;
-}
-
-.affiliate-link i {
-    width: 16px;
-    text-align: center;
-}
-
-/* Update mobile styles */
-@media (max-width: 768px) {
-    .affiliate-panel {
-        right: -70px;
-        max-width: calc(100vw - 48px);
-        overflow: hidden;
-    }
-}
-
-/* Add these styles for the affiliate icon and credit link */
 .affiliate-icon {
     width: 16px;
     height: 16px;
     border-radius: 50%;
     object-fit: cover;
-}
-
-.affiliate-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    color: var(--t);
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
 .affiliate-link span {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
-    gap: 4px;
+    gap: 12px;  /* Increased gap between links */
     white-space: nowrap;
+}
+
+/* Individual link styles */
+.affiliate-link-text,
+.credit-link {
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.affiliate-link-text {
+    color: var(--t);
 }
 
 .credit-link {
     color: var(--p);
-    text-decoration: none;
-    font-size: 0.9em;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
 }
 
+/* Hover states for individual links */
+.affiliate-link-text:hover,
 .credit-link:hover {
-    opacity: 1;
-}
-
-.affiliate-link:hover {
     background: var(--p);
     color: white;
 }
 
-.affiliate-link:hover .credit-link {
-    color: white;
-    opacity: 1;
-}
-
-/* Update the link text styles */
-.affiliate-link-text {
-    text-decoration: none;
-    color: var(--t);
-}
-
-.affiliate-link-text:hover {
-    color: white;
+/* Remove the parent hover effect and the dash */
+.affiliate-link:hover {
+    background: transparent;
 }
