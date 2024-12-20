@@ -1179,7 +1179,7 @@ gecko-coin-ticker-widget {
     border: 1px solid var(--b);
     border-radius: 8px;
     padding: 8px;
-    min-width: max-content;
+    width: 200px;
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
@@ -1206,6 +1206,8 @@ gecko-coin-ticker-widget {
     border-radius: 4px;
     transition: all 0.2s ease;
     white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .affiliate-link span {
@@ -1238,6 +1240,6 @@ gecko-coin-ticker-widget {
 @media (max-width: 768px) {
     .affiliate-panel {
         right: -70px;
-        max-width: calc(100vw - 48px);
+        width: 180px;
     }
 }
