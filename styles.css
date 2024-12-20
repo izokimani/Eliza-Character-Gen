@@ -1179,7 +1179,7 @@ gecko-coin-ticker-widget {
     border: 1px solid var(--b);
     border-radius: 8px;
     padding: 8px;
-    min-width: 160px;
+    width: fit-content;
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
@@ -1198,6 +1198,7 @@ gecko-coin-ticker-widget {
     text-decoration: none;
     border-radius: 4px;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .affiliate-link:hover {
@@ -1210,9 +1211,69 @@ gecko-coin-ticker-widget {
     text-align: center;
 }
 
-/* Add this to the existing media queries */
+/* Update mobile styles */
 @media (max-width: 768px) {
     .affiliate-panel {
-        right: -70px; /* Adjust position for mobile */
+        right: -70px;
+        max-width: calc(100vw - 48px);
+        overflow: hidden;
     }
+}
+
+/* Add these styles for the affiliate icon and credit link */
+.affiliate-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.affiliate-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    color: var(--t);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.affiliate-link span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.credit-link {
+    color: var(--p);
+    text-decoration: none;
+    font-size: 0.9em;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.credit-link:hover {
+    opacity: 1;
+}
+
+.affiliate-link:hover {
+    background: var(--p);
+    color: white;
+}
+
+.affiliate-link:hover .credit-link {
+    color: white;
+    opacity: 1;
+}
+
+/* Update the link text styles */
+.affiliate-link-text {
+    text-decoration: none;
+    color: var(--t);
+}
+
+.affiliate-link-text:hover {
+    color: white;
 }
