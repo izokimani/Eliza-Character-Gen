@@ -1180,9 +1180,11 @@ gecko-coin-ticker-widget {
     border-radius: 8px;
     padding: 8px;
     width: 200px;
+    height: 52px;
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
+    overflow: hidden;
 }
 
 .affiliate-panel.active {
@@ -1201,6 +1203,7 @@ gecko-coin-ticker-widget {
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
+    height: 36px;
     color: var(--t);
     text-decoration: none;
     border-radius: 4px;
