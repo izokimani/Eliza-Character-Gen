@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Add this at the top to check if styles are loading
+    const styles = getComputedStyle(document.documentElement);
+    console.log('CSS Variables loaded:', {
+        background: styles.getPropertyValue('--bg'),
+        text: styles.getPropertyValue('--t'),
+        primary: styles.getPropertyValue('--p')
+    });
+
     // Track mouse position for tooltips
     document.addEventListener('mousemove', (e) => {
         document.documentElement.style.setProperty('--mouse-x', `${e.clientX + 20}px`);

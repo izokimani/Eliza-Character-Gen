@@ -1176,7 +1176,7 @@ gecko-coin-ticker-widget {
     right: 0;
     margin-top: 8px;
     background: var(--s);
-    border: 2px solid red;
+    border: 1px solid var(--b);
     border-radius: 8px;
     padding: 8px;
     width: 200px;
@@ -1191,53 +1191,39 @@ gecko-coin-ticker-widget {
 }
 
 .affiliate-link {
-    position: relative;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 8px;
     height: 36px;
     color: var(--t);
     text-decoration: none;
     border-radius: 4px;
     transition: all 0.2s ease;
-    white-space: nowrap;
-    width: 100%;
-    box-sizing: border-box;
-    background: rgba(255, 0, 0, 0.1);
-    border: 1px solid blue;
 }
 
 .affiliate-icon {
-    display: block;
-    flex-shrink: 0;
     width: 16px;
     height: 16px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid green;
 }
 
 .affiliate-link span {
-    flex: 1;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 4px;
-    white-space: nowrap;
-    background: rgba(0, 255, 0, 0.1);
 }
 
 .affiliate-link-text {
     text-decoration: none;
     color: var(--t);
-    display: inline-block;
 }
 
 .credit-link {
     color: var(--p);
     text-decoration: none;
     font-size: 0.9em;
-    display: inline-block;
 }
 
 .affiliate-link:hover {

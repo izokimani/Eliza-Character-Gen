@@ -6,6 +6,7 @@ import { dirname } from 'path';
 import fs from 'fs/promises';
 import pdf2md from '@opendocsg/pdf2md';
 import fetch from 'node-fetch';
+import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -500,6 +501,21 @@ Output the refined character data as a single JSON object following the exact te
         console.error('Character refinement error:', error);
         res.status(500).json({ error: error.message || 'Failed to refine character' });
     }
+});
+
+// Serve static files from root directory
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Ensure CSS file is served
+app.get('/styles.css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'styles.css'));
+});
+
+// Ensure JavaScript file is served
+app.get('/app.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'app.js'));
 });
 
 const PORT = process.env.PORT || 4001;
