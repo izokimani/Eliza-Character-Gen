@@ -1183,10 +1183,15 @@ gecko-coin-ticker-widget {
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .affiliate-panel.active {
     display: block;
+    opacity: 1;
+    visibility: visible;
 }
 
 .affiliate-link {
