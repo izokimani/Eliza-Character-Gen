@@ -1068,11 +1068,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const affiliateToggle = document.getElementById('affiliate-toggle');
     const affiliatePanel = document.querySelector('.affiliate-panel');
 
+    console.log('Toggle:', affiliateToggle);  // Debug log
+    console.log('Panel:', affiliatePanel);    // Debug log
+    console.log('Panel content:', affiliatePanel?.innerHTML);  // Debug log
+
     if (affiliateToggle && affiliatePanel) {
         affiliateToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             affiliateToggle.classList.toggle('active');
             affiliatePanel.classList.toggle('active');
+            console.log('Panel clicked, active:', affiliatePanel.classList.contains('active')); // Debug log
         });
 
         document.addEventListener('click', (e) => {

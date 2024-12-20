@@ -1176,7 +1176,7 @@ gecko-coin-ticker-widget {
     right: 0;
     margin-top: 8px;
     background: var(--s);
-    border: 1px solid var(--b);
+    border: 2px solid red;  /* Debug border */
     border-radius: 8px;
     padding: 8px;
     width: 200px;
@@ -1184,7 +1184,7 @@ gecko-coin-ticker-widget {
     display: none;
     box-shadow: var(--sh);
     z-index: 1000;
-    overflow: hidden;
+    overflow: visible;  /* Changed to visible for debugging */
 }
 
 .affiliate-panel.active {
@@ -1196,6 +1196,7 @@ gecko-coin-ticker-widget {
     height: 16px;
     border-radius: 50%;
     object-fit: cover;
+    border: 1px solid green;  /* Debug border */
 }
 
 .affiliate-link {
@@ -1211,6 +1212,8 @@ gecko-coin-ticker-widget {
     white-space: nowrap;
     width: 100%;
     box-sizing: border-box;
+    background: rgba(255, 0, 0, 0.1);  /* Debug background */
+    border: 1px solid blue;  /* Debug border */
 }
 
 .affiliate-link span {
@@ -1218,6 +1221,7 @@ gecko-coin-ticker-widget {
     align-items: center;
     gap: 4px;
     white-space: nowrap;
+    background: rgba(0, 255, 0, 0.1);  /* Debug background */
 }
 
 .affiliate-link-text {
