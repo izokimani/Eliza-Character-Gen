@@ -12,8 +12,12 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-// CORS configuration
-const corsOptions = { origin: true, credentials: true };
+// CORS configuration with explicit methods
+const corsOptions = {
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS']  // Explicitly allow these methods
+};
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -26,15 +30,10 @@ const upload = multer({ storage: storage });
 // Middleware order is important
 app.use(cors(corsOptions));
 app.use(express.static(__dirname));
+app.use(express.json({ limit: '50mb' }));  // Move this up before routes
 
-// JSON parsing middleware only for non-file upload routes
-app.use((req, res, next) => {
-    if (req.path === '/api/process-files') {
-        next();
-    } else {
-        express.json({ limit: '50mb' })(req, res, next);
-    }
-});
+// Add OPTIONS handler for preflight requests
+app.options('*', cors(corsOptions));
 
 // Ensure uploads directory exists
 await fs.mkdir('uploads', { recursive: true }).catch(console.error);
@@ -115,6 +114,7 @@ app.post('/api/generate-character', async (req, res) => {
         const { prompt, model } = req.body;
         const apiKey = req.headers['x-api-key'];
 
+        // Validate inputs
         if (!prompt) {
             return res.status(400).json({ error: 'Prompt is required' });
         }
@@ -272,7 +272,7 @@ Generate a complete character profile as a single JSON object following the exac
         }
     } catch (error) {
         console.error('Character generation error:', error);
-        res.status(500).json({ error: error.message || 'Failed to generate character' });
+        return res.status(500).json({ error: error.message || 'Failed to generate character' });
     }
 });
 
@@ -507,4 +507,10 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
     console.log(`Server running on http://${HOST}:${PORT}`);
+});
+
+// Add error handling middleware at the bottom
+app.use((err, req, res, next) => {
+    console.error('Server error:', err);
+    res.status(500).json({ error: 'Internal server error' });
 });
