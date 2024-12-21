@@ -16,7 +16,8 @@ const app = express();
 const corsOptions = {
     origin: true,
     credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS']  // Explicitly allow these methods
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'X-API-Key', 'Authorization']
 };
 
 // Configure multer for file uploads
@@ -108,6 +109,12 @@ app.post('/api/fix-json', async (req, res) => {
     }
 });
 
+// Add this helper function near the top
+const sendJsonResponse = (res, data) => {
+    res.setHeader('Content-Type', 'application/json');
+    return res.json(data);
+};
+
 // Character generation endpoint
 app.post('/api/generate-character', async (req, res) => {
     try {
@@ -116,13 +123,13 @@ app.post('/api/generate-character', async (req, res) => {
 
         // Validate inputs
         if (!prompt) {
-            return res.status(400).json({ error: 'Prompt is required' });
+            return sendJsonResponse(res.status(400), { error: 'Prompt is required' });
         }
         if (!model) {
-            return res.status(400).json({ error: 'Model is required' });
+            return sendJsonResponse(res.status(400), { error: 'Model is required' });
         }
         if (!apiKey) {
-            return res.status(400).json({ error: 'API key is required' });
+            return sendJsonResponse(res.status(400), { error: 'API key is required' });
         }
 
         // Extract potential name from the prompt
@@ -260,7 +267,7 @@ Generate a complete character profile as a single JSON object following the exac
             characterData.style.chat = Array.isArray(characterData.style.chat) ? characterData.style.chat : [];
             characterData.style.post = Array.isArray(characterData.style.post) ? characterData.style.post : [];
 
-            res.json({
+            return sendJsonResponse(res, {
                 character: characterData,
                 rawPrompt: prompt,
                 rawResponse: generatedContent
@@ -272,7 +279,9 @@ Generate a complete character profile as a single JSON object following the exac
         }
     } catch (error) {
         console.error('Character generation error:', error);
-        return res.status(500).json({ error: error.message || 'Failed to generate character' });
+        return sendJsonResponse(res.status(500), { 
+            error: error.message || 'Failed to generate character' 
+        });
     }
 });
 
@@ -509,8 +518,19 @@ app.listen(PORT, HOST, () => {
     console.log(`Server running on http://${HOST}:${PORT}`);
 });
 
-// Add error handling middleware at the bottom
+// Update the error handling middleware at the bottom
 app.use((err, req, res, next) => {
     console.error('Server error:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    return sendJsonResponse(res.status(500), { 
+        error: 'Internal server error',
+        details: err.message 
+    });
+});
+
+// Add this catch-all middleware for unhandled routes
+app.use((req, res) => {
+    return sendJsonResponse(res.status(404), { 
+        error: 'Not Found',
+        path: req.path 
+    });
 });
