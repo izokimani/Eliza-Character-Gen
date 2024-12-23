@@ -1081,4 +1081,12 @@ document.addEventListener('DOMContentLoaded', () => {
             affiliatePanel.classList.remove('active');
         }
     });
+
+    // Add this with your other event listeners
+    document.querySelector('.santa-hat').addEventListener('click', function() {
+        const hohoho = document.querySelector('.ho-ho-ho');
+        hohoho.classList.remove('active'); // Reset animation
+        void hohoho.offsetWidth; // Force reflow
+        hohoho.classList.add('active');
+    });
 });

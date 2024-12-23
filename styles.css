@@ -1381,3 +1381,51 @@ gecko-coin-ticker-widget {
 .site-branding:hover .santa-hat {
     animation: hatBounce 1s ease-in-out infinite;
 }
+
+/* HO HO HO overlay styles */
+.ho-ho-ho {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 72px;
+    font-weight: bold;
+    color: #ff0000;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3),
+                 0 0 20px rgba(255,255,255,0.5);
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    font-family: 'Mountains of Christmas', cursive;
+}
+
+/* Animation for the HO HO HO text */
+@keyframes hohoho {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+    80% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Make hat clickable */
+.santa-hat {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Active animation class */
+.ho-ho-ho.active {
+    animation: hohoho 2s ease-in-out forwards;
+}
