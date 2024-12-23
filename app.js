@@ -1089,4 +1089,17 @@ document.addEventListener('DOMContentLoaded', () => {
         void hohoho.offsetWidth; // Force reflow
         hohoho.classList.add('active');
     });
+
+    // Santa hat click handler
+    const santaHat = document.querySelector('.santa-hat');
+    const hohoho = document.querySelector('.ho-ho-ho');
+
+    if (santaHat && hohoho) {
+        santaHat.addEventListener('click', () => {
+            console.log('Hat clicked!'); // Debug log
+            hohoho.classList.remove('active');
+            void hohoho.offsetWidth; // Force reflow
+            hohoho.classList.add('active');
+        });
+    }
 });

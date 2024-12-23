@@ -1362,9 +1362,10 @@ gecko-coin-ticker-widget {
     width: 32px;
     height: 32px;
     transform: rotate(-20deg);
-    pointer-events: none;
     z-index: 1;
     filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+    cursor: pointer;
+    pointer-events: auto;
 }
 
 /* Hat animation */
@@ -1388,44 +1389,59 @@ gecko-coin-ticker-widget {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    text-align: center;
+}
+
+.ho-ho-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+.ho-ho-text {
+    display: block;
     font-size: 72px;
     font-weight: bold;
     color: #ff0000;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3),
                  0 0 20px rgba(255,255,255,0.5);
-    z-index: 10000;
-    pointer-events: none;
-    opacity: 0;
     font-family: 'Mountains of Christmas', cursive;
 }
 
-/* Animation for the HO HO HO text */
+/* Update the animation */
 @keyframes hohoho {
     0% {
-        transform: translate(-50%, -50%) scale(0);
+        transform: translate(-50%, -50%) scale(0) rotate(-10deg);
         opacity: 0;
     }
     20% {
-        transform: translate(-50%, -50%) scale(1.2);
+        transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
         opacity: 1;
     }
     80% {
-        transform: translate(-50%, -50%) scale(1);
+        transform: translate(-50%, -50%) scale(1) rotate(-5deg);
         opacity: 1;
     }
     100% {
-        transform: translate(-50%, -50%) scale(1.5);
+        transform: translate(-50%, -50%) scale(1.5) rotate(0deg);
         opacity: 0;
     }
 }
 
-/* Make hat clickable */
-.santa-hat {
-    pointer-events: auto;
-    cursor: pointer;
-}
-
-/* Active animation class */
 .ho-ho-ho.active {
     animation: hohoho 2s ease-in-out forwards;
+}
+
+/* Add spin animation for the icon */
+@keyframes iconSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.ho-ho-ho.active .ho-ho-icon {
+    animation: iconSpin 2s ease-in-out infinite;
 }
